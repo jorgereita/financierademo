@@ -1,0 +1,83 @@
+<mat-tab-group   #tabsFeed> 
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <i class="material-icons" style="color: #f68e22;"> store </i>
+      <span>&nbsp; Solicitudes tienda </span>
+    </ng-template>
+
+    <div *ngIf="feeditems">
+      <div *ngFor="let item of feeditems;index as i" [ngClass]="item.animation==1?'zoomyInAnimation':''">
+        <div class="container-sols" *ngIf="checkStateItem(item)=='Disponible' ">
+          <span [ngClass]="'indicator color-state-1'"></span>
+          <div class="lateral-button">
+            <mat-icon [ngClass]="'color-1'">
+              {{(evalStateSimbol(1))}}
+            </mat-icon>
+          </div>
+          <div class="content-card">
+            <button *ngIf="checkStateItem(item)=='Disponible' " class="button-circle color-state-1" (click)="takeSol(item)" aria-label="button take">
+              Tomar
+            </button>
+          </div>
+          <div class="content-card">
+            <h3>Caja:</h3>
+            <p class="number-caja"> {{item.UserId}} </p>
+          </div>
+          <div class="content-card">
+            <h3>Seccion:</h3>
+            <p> Cajas infantil</p>
+          </div>
+          <!-- <div class="content-card">
+            <h3>Estado:</h3>
+            <p> {{checkStateItem(item)}} </p>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <i class="material-icons" style="color: #f68e22;">person</i>
+      <span>&nbsp; Mis gestiones </span>
+    </ng-template>
+    <div *ngFor="let item of myRequest;index as i" [ngClass]="item.animation==1?'zoomyInAnimation':''">
+      <div class="container-sols">
+        <span [ngClass]="'indicator color-state-'+ (i>2?1:i+1)"></span>
+        <div class="lateral-button">
+          <mat-icon [ngClass]="'color-'+ (i>2?1:i+1)">
+            {{(evalStateSimbol(i+1))}}
+          </mat-icon>
+        </div>
+        <div class="content-card">
+          <button class="button-circle color-state-1" (click)="resumeSol(item)" aria-label="button take">
+            Continua proceso
+          </button>
+          <button class="button-circle color-state-2" (click)="irPopUpInfo(item,i)" aria-label="button decline">
+            Cliente desiste
+          </button>
+          <button class="button-circle color-state-2" (click)="relase(item,i)" aria-label="button decline">
+            Liberar
+          </button>
+        </div>
+        <div class="content-card">
+          <h3>Caja:</h3>
+          <p class="number-caja"> {{item.UserId}} </p>
+        </div>
+        <div class="content-card">
+          <h3>Asesor:</h3>
+          <p> {{item.Usuario}} </p>
+        </div>
+        <div class="content-card">
+          <h3>Cliente:</h3>
+          <p> Pepe perez </p>
+        </div>
+        <div class="content-card">
+          <h3>Cupo:</h3>
+          <p> L 50,000  </p>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+
+</mat-tab-group>

@@ -1,0 +1,105 @@
+ 
+   .row{
+    margin-right:0 !important;
+    margin-left:0 !important
+ }
+  $base-color: #215967;
+  $base-color2:#f68e22;
+  $base-color3:#31869B; 
+  $base-color4:#2da563;  
+  $base-color5:#df4834; 
+  .degrade{
+    background-image: linear-gradient(to bottom, #15da51, #98b800, #ce8e00, #eb5916, #eb1254);
+  }
+  .panelVerde1{
+    background :#9adfb9 ;
+    color:white;
+  }
+  .panelVerde{
+    
+    color:$base-color4;
+  }
+  .panelNaranja{
+    color:$base-color2;
+  }
+  .panelRojo1{
+    background :#eb614f ;
+    color:white;
+  }
+  .panelRojo{
+ 
+    color:$base-color5;
+  }
+  .fondo{
+    color: white;
+    background-color: $base-color;
+    width: 200px;
+  }  
+  .fondo2{
+    color: white;
+    background-color: $base-color2;
+    width: 200px;
+  }
+  .fondoW{
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: $base-color;
+  }
+  .texto{
+    color: $base-color ;
+  }
+  .noCol{
+    padding-left: 0 !important;
+  }
+  .tabla1{
+      font-size: 20px; 
+      width: 100%;
+      border: 2px solid $base-color ;
+  }
+  .tabla2{
+    font-size:18px; 
+    width: 100%;
+    border: 2px solid $base-color ;
+  }
+  .tabla3{
+    font-size:18px; 
+    width: 100%;
+    border: 2px solid $base-color2 ;
+  }
+
+  #table1 {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    overflow: auto;
+  }
+  
+  #table1 td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  #table1 tr:nth-child(even) {
+    // background-color: #dddddd;
+  }
+  
+  .thHei{
+    height: 80px;
+    color: white;
+    border: 1px solid #dddddd;
+    text-align: center;
+    }
+  .colorTh1{
+    background-color: $base-color;
+  }
+  .colorTh2{
+    background-color: $base-color3;
+}
+.colorTh3{
+    background-color: $base-color4;
+}
+.colorTh4{
+    background-color: $base-color2;
+}

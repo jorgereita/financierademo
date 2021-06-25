@@ -1,0 +1,24 @@
+<mat-tab-group [(selectedIndex)]="index">
+
+  <mat-tab *ngIf="roleId=='4'||roleId=='6'">
+    <ng-template mat-tab-label>
+      <i class="material-icons" style="color: #f68e22;">supervisor_account</i>
+      <span>&nbsp; Supervisor Seguimiento </span>
+    </ng-template>
+    <app-supervisorseguimientos></app-supervisorseguimientos>
+  </mat-tab>
+  <mat-tab *ngIf="roleId=='4'||roleId=='6'">
+    <ng-template mat-tab-label>
+      <i class="material-icons" style="color: #f68e22;">assessment</i>
+      <span>&nbsp; Rankings asesores comerciales </span>
+    </ng-template>
+    <app-rankings></app-rankings>
+  </mat-tab>
+  <!-- <mat-tab *ngIf="roleId=='4'||roleId=='6'">
+    <ng-template mat-tab-label>
+      <i class="material-icons" style="color: #f68e22;">assessment</i>
+      <span>&nbsp; Reporte jefe de ventas </span>
+    </ng-template>
+    <app-reporte-jefeventas></app-reporte-jefeventas>
+  </mat-tab> -->
+</mat-tab-group>

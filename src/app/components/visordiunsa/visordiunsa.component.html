@@ -1,0 +1,395 @@
+<br><br>
+<div class="card" [formGroup]="dataIntra" style="background: transparent !important;">
+  <div class="md-form">
+
+    <h5 class="card-header info-color white-text text-center py-4" *ngIf="roleId=='4'||roleId=='6'">
+
+      <button (click)="descargarReporte()" [ngStyle]="{'background': waitSend ? 'gray':' #0168b3'}" id="btnSendReport"
+        mat-raised-button style="color: white; ">Log Constancias </button>
+      <mat-progress-bar mode="indeterminate" *ngIf="waitSendCsv"></mat-progress-bar>
+    </h5>
+
+  </div>
+  <div style="width: 100%;text-align: center;">
+    <br>
+    <mat-form-field appearance="outline" appearance="outline" style="width: 90%;  ">
+      <mat-label>Ingrese Número Documento</mat-label>
+      <input matInput autocomplete="off" placeholder="" (keyup)="onKeyCedula($event)" formControlName="Documento"
+        type="text" value="">
+      <mat-icon matSuffix>person_pin</mat-icon>
+    </mat-form-field>
+    <button  (click)="enviarBuscar()" [disabled]="(!dataIntra.valid)||(waitSend)"
+    [ngStyle]="{'background': waitSend ? 'gray':' #0168b3'}" id="btnSendReport" mat-raised-button
+    style="color: white;width: 90%;">Buscar </button>
+  <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+  </div>
+
+  <div class="card-body px-lg-5 pt-0">
+
+
+
+
+
+    <ng-container>
+
+      <br><br><br>
+      <div id="btsContentTable" *ngIf="dataUsuario" style="width: 100%;padding-left: 1%;">
+        <div class="">
+          <div class="row">
+            <div class="col-12" style="text-align: center;background-color:  #0167b1;color: white;font-size:25px;">
+              INFORMACIÓN DEL CLIENTE
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm naranjaS">
+              DOCUMENTO
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.Identificacion}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              NOMBRE
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.Nombre}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              CORREO
+            </div>
+            <div class="col-sm">
+              {{dataUsuario.Correo}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              DIRECCION
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.Direccion}}
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <div class="row">
+            <div class="col-12" style="text-align: center;background-color:  #0167b1;color: white;font-size:25px;">
+              INFORMACIÓN DEL CREDITO {{dataUsuario.Credito}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              ESTADO
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.Estado}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              APROBADO
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.CupoAprobado}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              DISPONIBLE
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.CupoDisponible}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              CUOTA
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.FacturacionCuota}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm naranjaS">
+              FECHA LIMITE PAGO
+            </div>
+            <div class="col-sm ">
+              {{dataUsuario.FechaLimitePago}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6 naranjaS">
+              <span>
+                DETALLE PAGO MÍNIMO
+              </span>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      CAPITAL
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.Capital}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      CAPITAL EN MORA
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.ValorMora}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      INTERES EN CORRIENTE
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.Corrientes}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      INTERES EN MORA
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.Mora}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      SEGURO
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.OtrosConceptos}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      TOTAL PAGO MINIMO
+                    </div>
+                    <div class="col-sm ">
+                      <b> L {{dataUsuario.PagoMinimo}} </b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6 naranjaS">
+              DETALLE PAGO TOTAL
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      SALDO ACTUAL
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.ValorDeuda}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      INTERES PROYECTADO
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.InteresProyectado}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      PAGOS RETENIDOS
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.PagosRetenidos}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      OFERTA
+                    </div>
+                    <div class="col-sm ">
+                      L {{dataUsuario.Oferta}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-sm naranjaS">
+                      PAGO TOTAL
+                    </div>
+                    <div class="col-sm ">
+                      <b> L {{dataUsuario.ConMulta}} </b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-6 naranjaS">
+              RECAUDOS
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-6 naranjaS">
+                      <b>FECHA DE PAGO</b>
+                    </div>
+                    <div class="col-6 naranjaS">
+                      <b>VALOR PAGADO</b>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row" *ngFor="let item of dataUsuario.Recaudos">
+                    <div class="col-6 ">
+                      {{item.FechaPago}}
+                    </div>
+                    <div class="col-6 ">
+                      L {{item.ValorAfectacion}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="row">
+            <div class="col-12" style="text-align: center;background-color:  #0167b1;color: white;font-size:25px;">
+              ARCHIVOS
+            </div>
+          </div>
+
+          <div class="text-right my-4">
+            <button (click)="openUploaderModal()" [disabled]="waitSendRep" class="btn" type="button" mat-button
+                    style="background:#262c5e;color: white;"> <i class="material-icons"> file_upload </i> Subir archivo
+            </button>
+          </div>
+
+          <div class="row">
+            <div class="col-3 naranjaS" style="border:0;">
+              NOMBRE
+            </div>
+            <div class="col-3 naranjaS" style="border:0;">
+              DOCUMENTO
+            </div>
+<!--            <div class="col-3 naranjaS" style="border:0;">-->
+<!--              CARGAR-->
+<!--            </div>-->
+            <div class="col-3 naranjaS" style="border:0;">
+              FECHA
+            </div>
+          </div>
+          <div class="row " style="border:0;padding-top: 5px;" *ngFor="let item of dataUsuario.documentos">
+            <div class="col-3 " style="border:0;">
+              {{item.nombre}}
+            </div>
+            <div class="col-3 " style="border:0;">
+              <div style="cursor: pointer;" (click)="download(item.nombre,item.ubicacion)"><img  src="../../../assets/img/file.png" alt="" height="35" width="35" style="cursor: pointer;" class="mr-2"><u>Ver  archivo</u></div>
+            </div>
+<!--            <div class="col-3 " style="border:0;">-->
+<!--              <div style="cursor: pointer;" (click)="download(item.nombre,item.ubicacion)"><img  src="../../../assets/img/file.png" alt="" height="35" width="35" style="cursor: pointer;" class="mr-2"><u>Cargar  archivo</u></div>-->
+<!--            </div>-->
+            <div class="col-3 " style="border:0;">
+              {{item.fechaControl.split("T")[0]}} {{item.fechaControl.split("T")[1].split(".")[0] }}
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm" style="padding-top: 5px;border: 0;">
+            <mat-card style="width: 100%;height: 150px;">
+              <mat-card-title>
+                <span class="naranjaS"> Reportes </span>
+              </mat-card-title>
+              <button (click)="descargarReportePdf()" [disabled]="waitSendRep" class="btn" type="button" mat-button
+                style="background:#262c5e;color: white;"> <i class="material-icons"> assessment </i> Generar estado de cuenta
+              </button>
+              <mat-progress-bar mode="indeterminate" *ngIf="waitSendRep"></mat-progress-bar>
+            </mat-card>
+          </div>
+          <div class="col-sm" style="padding-top: 5px;border: 0;" *ngIf="roleId=='4'||roleId=='5'||roleId=='6'||roleId=='7'">
+            <mat-card style="width: 100%;height: 400px; overflow: auto;">
+              <mat-card-title>
+                <span class="naranjaS"> Constancias </span>
+              </mat-card-title>
+              <div class="flex-container" [formGroup]="dataSocioDe" style="padding-left: 10%;">
+
+                <div>
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Tipo de constancia</mat-label>
+                    <mat-select placeholder="" formControlName="tipoConstancia">
+                      <ng-container *ngFor="let item of constanciaTipo">
+                        <mat-option [value]="item.Id" *ngIf="item.Show">
+                          {{item.Descripcion}}
+                        </mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <mat-icon matSuffix>menu_book</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Institución</mat-label>
+                    <input matInput autocomplete="off" placeholder="" formControlName="institucion" type="text"
+                      value="">
+                    <mat-icon matSuffix>location_city
+                    </mat-icon>
+                  </mat-form-field>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" style="width: 90%;  ">
+                    <mat-label>Ciudad</mat-label>
+                    <mat-select placeholder="" formControlName="ciudad">
+                      <mat-option *ngFor="let item of ciudad" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>room</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div style="padding-left: 3%;">
+                  <button (click)="descargarConsta()" [disabled]="waitSendCont" class="btn" type="button" mat-button
+                    style="background:#262c5e;color: white;"><i class="material-icons">assignment </i> Generar
+                    constancia</button>
+                </div>
+                <mat-progress-bar mode="indeterminate" *ngIf="waitSendCont"></mat-progress-bar>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

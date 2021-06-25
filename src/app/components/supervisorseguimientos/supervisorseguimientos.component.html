@@ -1,0 +1,128 @@
+<mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img src="../../../assets/img/supervisor.png" alt="" width="340" height="330">
+    </div>
+    <div class="col" style="padding-top: 6%;">
+      <div id="containerTop" *ngIf="dataElement">
+        <div class="row tabla1">
+          <div class="col fondo">
+            Nombre del supervisor
+          </div>
+          <div class="col texto">
+            {{dataElement.Nombre}}
+          </div>
+        </div>
+        <br>
+        <div class="row tabla1">
+          <div class="col fondo"> 
+            Tienda
+          </div>
+          <div class="col texto">
+            {{dataElement.Tienda}}
+          </div>
+        </div>
+        <br>
+        <div class="row tabla1">
+          <div class="col fondo">
+            Fecha
+          </div>
+          <div class="col texto">
+            {{dataElement.Fecha}}
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="fondoW">
+  <h2> <span class="material-icons"> today  </span> Gestión Diaria Asesores Comerciales </h2>
+</div>
+<br>
+<div *ngIf="dataElement">
+  <div *ngIf="dataHoy.length==0" style="width: 100%;text-align: center;"> 
+    <span style="width:250px; height: 150px; " class="lead">Sin información.  </span>
+  </div>  
+</div>
+<div style="width: 100%;text-align: center;">
+  <mat-form-field appearance="outline" style="width: 90%;" class="example-full-width" *ngIf="dataHoy.length>0">
+    <mat-label>Filtrar gestiones diarias</mat-label>
+    <input matInput autocomplete="off" placeholder="Filtrar consultas..." style="cursor: auto"
+      (input)="onSearchChange($event.target.value)">
+  </mat-form-field> 
+</div>
+ 
+<br>
+<table id="table1" *ngIf="dataElement">
+  <tr *ngIf="dataHoy.length>0">
+     <th class='thHei colorTh1'>Nombre asesor</th>
+     <th class='thHei colorTh1'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'Abordajes')">  swap_vertical_circle </span> abordajes</th>
+     <th class='thHei colorTh2'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'NuevosAprobados')">  swap_vertical_circle </span>Nuevos Aprobados</th>
+     <th class='thHei colorTh2'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'NuevosFacturados')">  swap_vertical_circle </span>Nuevos Facturados</th>
+     <th class='thHei colorTh2'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'PctActivacionNuevos')">  swap_vertical_circle </span>% Activacion Nuevos</th>
+     <th class='thHei colorTh3'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'MegabaseAprobados')">  swap_vertical_circle </span>Megabase Aprobados</th>
+     <th class='thHei colorTh3'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'MegabaseFacturados')">  swap_vertical_circle </span>Megabase Facturados</th>
+     <th class='thHei colorTh3'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'PctActivacionMegabase')">  swap_vertical_circle </span>% Activacion Megabase</th>
+     <th class='thHei colorTh4'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc1(dataHoy,'Rechazados')">  swap_vertical_circle </span>Rechazados</th>
+  </tr>
+  <tr *ngFor="let item of dataHoy">
+    <td> {{item.Name}}</td>
+    <td> {{item.Abordajes}} </td>
+    <td> {{item.NuevosAprobados}} </td>
+    <td> {{item.NuevosFacturados}} </td>
+    <td> {{item.PctActivacionNuevos}} % </td>
+    <td> {{item.MegabaseAprobados}} </td>
+    <td> {{item.MegabaseFacturados}} </td>
+    <td> {{item.PctActivacionMegabase}} % </td>
+    <td> {{item.Rechazados}} </td>
+  </tr>
+
+</table>
+<br>
+<div class="fondoW">
+  <h2> <span class="material-icons"> wysiwyg  </span> Gestion acumulada mes Asesores Comerciales </h2>
+</div>
+<br>
+<div *ngIf="dataElement">
+  <div *ngIf="dataMes.length==0" style="width: 100%;text-align: center;"> 
+    <span style="width:250px; height: 150px; " class="lead">Sin información.  </span>
+  </div>  
+</div>
+
+<div *ngIf="dataElement"  style="text-align: center;width: 100%;">
+  <mat-form-field appearance="outline" style="width: 90%;" class="example-full-width" *ngIf="dataMes.length>0">
+    <mat-label>Filtrar gestiones mensuales</mat-label>
+    <input matInput autocomplete="off" placeholder="Filtrar consultas..." style="cursor: auto"
+      (input)="onSearchChange2($event.target.value)">
+  </mat-form-field>  
+</div>
+<br>
+<table id="table1" *ngIf="dataElement">
+  <tr *ngIf="dataMes.length>0"> 
+     <th class='thHei colorTh1'>  Nombre asesor </th>
+     <th class='thHei colorTh1'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'Abordajes')">  swap_vertical_circle </span> abordajes</th>
+     <th class='thHei colorTh2'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'NuevosAprobados')">  swap_vertical_circle </span>Nuevos Aprobados</th>
+     <th class='thHei colorTh2'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'NuevosFacturados')">  swap_vertical_circle </span>Nuevos Facturados</th>
+     <th class='thHei colorTh2'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'PctActivacionNuevos')">  swap_vertical_circle </span>% Activacion Nuevos</th>
+     <th class='thHei colorTh3'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'MegabaseAprobados')">  swap_vertical_circle </span>Megabase Aprobados</th>
+     <th class='thHei colorTh3'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'MegabaseFacturados')">  swap_vertical_circle </span>Megabase Facturados</th>
+     <th class='thHei colorTh3'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'PctActivacionMegabase')">  swap_vertical_circle </span>% Activacion Megabase</th>
+     <th class='thHei colorTh4'> <span class="material-icons" style="cursor: pointer;" (click)="filtrarAsc(dataMes,'Rechazados')">  swap_vertical_circle </span>Rechazados</th>
+  </tr>
+  <tr *ngFor="let item of dataMes">
+    <td> {{item.Name}}</td>
+    <td> {{item.Abordajes}} </td> 
+    <td> {{item.NuevosAprobados}} </td>
+    <td> {{item.NuevosFacturados}} </td>
+    <td> {{item.PctActivacionNuevos}} % </td>
+    <td> {{item.MegabaseAprobados}} </td>
+    <td> {{item.MegabaseFacturados}} </td>
+    <td> {{item.PctActivacionMegabase}} % </td>
+    <td> {{item.Rechazados}} </td>
+  </tr>
+</table>
+<br>
+<br>

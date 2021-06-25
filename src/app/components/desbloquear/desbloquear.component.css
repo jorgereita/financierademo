@@ -1,0 +1,14 @@
+.example-card{
+    /* padding: 2%; */
+    width: 100%;
+}
+.tableClass{
+    width: 100%;
+    border-radius: 1px solid #eeee;
+    border-collapse: collapse;
+}
+.tableClass td, th {
+    border: 1px solid #c7c0c0;
+    text-align: left;
+    padding: 8px;
+  }

@@ -1,0 +1,33 @@
+<div class="face-match">
+  <!--    <lib-fingerprint-detector-->
+  <!--      (takePhoto)="takePhoto($event)"-->
+  <!--    ></lib-fingerprint-detector>-->
+
+  <div *ngIf="data?.type === 'face'">
+    <lib-face-detector
+      selector=".mat-dialog-container"
+      placeholder="assets/img/funnel/selfie.png"
+      (takePhoto)="takePhoto($event)"
+    ></lib-face-detector>
+  </div>
+
+  <div *ngIf="data?.type === 'placeholder'">
+    <lib-dni-detector
+      (takePhoto)="takePhoto($event)"
+      format="horizontal"
+      selector=".mat-dialog-container"
+      side="placeholder"
+      placeholder="assets/img/funnel/placeholder.png"
+    ></lib-dni-detector>
+  </div>
+
+  <div *ngIf="data?.type === 'placeholder-inverse'">
+    <lib-dni-detector
+      (takePhoto)="takePhoto($event)"
+      format="horizontal"
+      selector=".mat-dialog-container"
+      side="placeholder-inverse"
+      placeholder="assets/img/funnel/placeholder-inverse.png"
+    ></lib-dni-detector>
+  </div>
+</div>

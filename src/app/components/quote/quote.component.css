@@ -1,0 +1,18 @@
+.quote {
+  text-align: center;
+  padding: 50px;
+}
+
+.quote .quote__results,
+.quote .quote__simulation,
+.quote .quote__simulation-table {
+  margin-top: 50px;
+}
+
+.quote h5 {
+  color: #1c60a7;
+}
+
+.quote button {
+  max-width: 200px;
+}

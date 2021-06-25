@@ -1,0 +1,149 @@
+<br>
+<div class="fondoW">
+  <h2> <span class="material-icons"> today </span> Rendimiento Productividad Clientes Nuevos </h2>
+</div>
+<br>
+<mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+<table id="table1" *ngIf="dataElement">
+  <tr>
+    <th class='thHei colorTh1'> Tienda</th>
+    <th class='thHei colorTh1'> Meta VAP´s Nuevas con Compra</th>
+    <th class='thHei colorTh1'> VAP´s con compra</th>
+    <th class='thHei colorTh1'> % Ejecucion al corte</th>
+    <th class='thHei colorTh1'> Desfase al corte </th>
+    <th class='thHei colorTh1'> Proyeccion Vaps Nuevas</th>
+    <th class='thHei colorTh1'> % Proyeccion Vaps Nuevas </th>
+    <th class='thHei colorTh4'> Meta Nuevas por Dia Facturadas</th>
+
+  </tr>
+  <tr *ngFor="let item of dataElement.ReporteJefeVenta1?.vwGestionJefeVenta1;index as i">
+    <td> <b> {{item.Tienda}} </b></td>
+    <td> {{item.MetaVAPSNuevaCompra}} </td>
+    <td> {{item.VAPSCompra}}  </td> 
+    <td style="text-align: justify; text-align-last: center;"> <span class="material-icons" [ngClass]="getClass1(item?.PorcentajeEjecucionCorte)"> {{  item.PorcentajeEjecucionCorte>=0 && item.PorcentajeEjecucionCorte<=44?'cancel':item.PorcentajeEjecucionCorte>=45 && item.PorcentajeEjecucionCorte<=64?'info':item.PorcentajeEjecucionCorte>=65?'check_circle':''    }}</span> {{item.PorcentajeEjecucionCorte}} % </td>
+    <td> {{item.DesfaseCorte}} </td>
+    <td> {{item.ProyeccionVapsNueva}} </td>
+
+    <td style="text-align: justify; text-align-last: center;"> <span class="material-icons" [ngClass]="getClass2(item?.ProcentajeProyeccionVapsNueva)"> {{  item.ProcentajeProyeccionVapsNueva>=0 && item.ProcentajeProyeccionVapsNueva<=44?'cancel':item.ProcentajeProyeccionVapsNueva>=45 && item.ProcentajeProyeccionVapsNueva<=90?'info':item.ProcentajeProyeccionVapsNueva>=91?'check_circle':''    }}</span> {{item.ProcentajeProyeccionVapsNueva}} % </td>
+ 
+    <td style="color:#f68e22 ;"> {{item.MetaNuevasDiaFacturado}} </td>
+
+  </tr>
+  <tr>
+    <td colspan="2" class='thHei colorTh4'> Vaps Compra Ideal</td>
+    <td  style="color:#f68e22 ;"> {{dataElement.ReporteJefeVenta1.VapsCompraIdeal}} </td>
+    <td colspan="5"  >  </td>
+  </tr>
+
+</table>
+<br>
+<div class="fondoW">
+  <h2> <span class="material-icons"> today </span> Rendimiento Ventas CrediDiunsa Tiendas </h2>
+</div>
+<br>
+
+<table id="table1" *ngIf="dataElement">
+  <tr>
+    <th class='thHei colorTh1'> Tienda</th>
+    <th class='thHei colorTh1'> Meta</th>
+    <th class='thHei colorTh1'> Venta</th>
+    <th class='thHei colorTh1'> Ideal</th>
+    <th class='thHei colorTh1'> Desfase</th>
+    <th class='thHei colorTh1'> % Ejecucion</th>
+    <th class='thHei colorTh1'> Proyeccion de Cierre </th>
+    <th class='thHei colorTh1'> % Proyeccion Ventas CrediDIunsa</th>
+    <th class='thHei colorTh1'> Minimo Diario</th>
+    <th class='thHei colorTh1'> Meta Participacion</th>
+    <th class='thHei colorTh1'> Participacion Ejecutada</th>
+    <th class='thHei colorTh1'> Cumplimiento Participacion</th>
+  </tr>
+
+  <tr *ngFor="let item of dataElement.ReporteJefeVenta2?.vwGestionJefeVenta2;index as i">
+    <td> <b> {{item.Tienda}} </b></td>
+    <td>  {{item.Meta?.toLocaleString()}} </td>
+    <td>  {{item.Venta?.toLocaleString()}} </td>
+    <td>  {{item.Ideal?.toLocaleString()}} </td>
+    <td>  {{item.Desface?.toLocaleString()}} </td>
+    <td> 
+      
+      <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+        aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.PorcentajeEjecucion+'%'}">
+        {{item.PorcentajeEjecucion}} %
+        </div>
+      </div></td>
+    <td>  {{item.ProyeccionCierre?.toLocaleString()}} </td>
+    <td><div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+      aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.PorcentajeProyeccionVentasCrediDiunsa+'%'}">
+      {{item.PorcentajeProyeccionVentasCrediDiunsa}} %
+      </div>
+    </div></td>
+    <td>  {{item.MinimoDiario?.toLocaleString()}} </td>
+    <td> {{item.MetaParticipacion}} </td>
+    <td> {{item.ParticipacionEjecutada}} </td>
+    <td> {{item.CumplimientoParticipacion}} </td>
+
+
+  </tr>
+  <tr>
+    <td colspan="3" class='thHei colorTh4'> Ideal</td>
+    <td   style="color:#f68e22 ;"> {{dataElement.ReporteJefeVenta2.Ideal}} </td>
+    <td colspan="8"  >  </td>
+  </tr>
+
+</table>
+<br>
+
+<div class="fondoW">
+  <h2> <span class="material-icons"> today </span> Rendimiento Tiendas </h2>
+</div>
+<br>
+
+<table id="table1" *ngIf="dataElement">
+  <tr>
+    <th class='thHei colorTh1'> Tienda</th>
+    <th class='thHei colorTh1'> Meta</th>
+    <th class='thHei colorTh1'> Venta</th>
+    <th class='thHei colorTh1'> Ideal</th>
+    <th class='thHei colorTh1'> % Ejecucion</th>
+    <th class='thHei colorTh1'> Proyeccion de Cierre </th>
+    <th class='thHei colorTh1'> % Proyeccion Ventas Tiendas </th>
+
+  </tr>
+
+  <tr *ngFor="let item of dataElement.ReporteJefeVenta3?.vwGestionJefeVenta3;index as i">
+    <td> <b> {{item.Tienda}} </b> </td>
+    <td>  {{item.Meta?.toLocaleString()}} </td>
+    <td>  {{item.Venta?.toLocaleString()}} </td>
+    <td>  {{item.Ideal?.toLocaleString()}} </td>
+    <td> <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+      aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.PorcentajeEjecucion+'%'}">
+      {{item.PorcentajeEjecucion}} %
+      </div>
+    </div>  </td>
+    <td>  {{item.ProyeccionCierre?.toLocaleString()}} </td>
+    <td>  <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+      aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.PorcentajeProyeccionVentaTienda+'%'}">
+      {{item.PorcentajeProyeccionVentaTienda}} %
+      </div>
+    </div>   </td>
+  </tr>
+  <tr>
+
+  </tr>
+  <tr>
+    <td colspan="2" class='thHei colorTh4'> Ideal</td>
+    <td style="color:#f68e22 ;">  {{dataElement.ReporteJefeVenta3.Ideal?.toLocaleString()}} </td>
+    <td colspan="2"> </td>
+    <td style="color:#f68e22 ;"> {{dataElement.ReporteJefeVenta3.PorcentajeProyeccionCierre }} %  </td>
+    <td> </td>
+  </tr>
+  <tr>
+    <td colspan="2" class='thHei colorTh4'> Desface </td>
+    <td style="color:#f68e22 ;">  {{dataElement.ReporteJefeVenta3.Desface?.toLocaleString()}} </td>
+    <td colspan="4"> </td>
+  </tr>
+</table>

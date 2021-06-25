@@ -1,0 +1,122 @@
+<mat-tab-group [(selectedIndex)]="demo1TabIndex">
+  <mat-tab label="Datos incial">
+    <ng-container [formGroup]="dataIntra">
+      <div class="md-form">
+        <br />
+        <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+          <mat-label>Tipo de documento</mat-label>
+          <mat-select placeholder="" value="1">
+            <mat-option value="1">CC </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>perm_identity</mat-icon>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+          <mat-label>Número Documento</mat-label>
+          <input matInput autocomplete="off" placeholder="" formControlName="Documento" type="text" value="" />
+          <mat-icon matSuffix>person_pin</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <button (click)="evalCons()" [disabled]="!dataIntra.valid || waitSend" [ngStyle]="{
+          background: waitSend
+            ? 'gray'
+            : !dataIntra.valid
+            ? 'gray'
+            : '#0168b3'
+        }" id="btnSendReport" mat-raised-button style="color: white; width: 90%">
+        Consultar
+      </button>
+      <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+    </ng-container>
+
+  </mat-tab>
+  <mat-tab label="Foto perfil">
+    <p>{{responseForm1?.Mensaje}}</p>
+    <p>CC: {{responseForm1?.NumeroIdentificacion}}</p>
+    <p>Estado: {{responseForm1?.Estado}}</p>
+
+    <div class="center">
+      <ng-container *ngIf="screenOn1 && webcamImage1 == null">
+        <app-camera (pictureTaken)="handleImage1($event)"></app-camera>
+      </ng-container>
+      <ng-container *ngIf="!screenOn1 || webcamImage1 !== null">
+        <img [src]="webcamImage1 !== null ? webcamImage1 : imageSrc1" class="circle" />
+      </ng-container>
+      <br />
+      <div>
+        (ajuste su rostro dentro del cuadro)
+      </div>
+      <button *ngIf="!screenOn1 || webcamImage1" type="button" mat-button style="background: #1c60a7; color: white"
+        (click)="toggleCamera1()">
+        Tomar Foto <i class="material-icons">add_a_photo</i>
+      </button>
+      <button *ngIf="screenOn1 && !webcamImage1" type="button" mat-button style="background: #262c5e; color: white"
+        (click)="cancelarCamera1()">
+        Cancelar <i class="material-icons">close</i>
+      </button>
+      <br>
+      <button (click)="sendFacePhoto()" [disabled]="!webcamImage1 || waitSend" [ngStyle]="{  background: '#0168b3' }"
+        id="btnSendReport" mat-raised-button style="color: white; width: 90%">
+        Enviar foto
+      </button>
+      <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+    </div>
+  </mat-tab>
+  <mat-tab label="Fotos cedula">
+    <div class="flex">
+      <div>
+        <p>Foto Reverso Cedula</p>
+        <ng-container *ngIf="screenOn2 && webcamImage2 == null">
+          <app-camera (pictureTaken)="handleImage2($event)"></app-camera>
+        </ng-container>
+        <ng-container *ngIf="!screenOn2 || webcamImage2 !== null">
+          <img [src]="webcamImage2 !== null ? webcamImage2 : imageSrc2" class="circle" />
+        </ng-container>
+        <br />
+        <div>
+          (ajuste Foto Reverso Cedula dentro del cuadro)
+        </div>
+        <button *ngIf="!screenOn2 || webcamImage2" type="button" mat-button style="background: #1c60a7; color: white"
+          (click)="toggleCamera2()">
+          Tomar Foto <i class="material-icons">add_a_photo</i>
+        </button>
+        <button *ngIf="screenOn2 && !webcamImage2" type="button" mat-button style="background: #262c5e; color: white"
+          (click)="cancelarCamera2()">
+          Cancelar <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div>
+        <p>Foto Adverso Cedula</p>
+        <ng-container *ngIf="screenOn3 && webcamImage3 == null">
+          <app-camera (pictureTaken)="handleImage3($event)"></app-camera>
+        </ng-container>
+        <ng-container *ngIf="!screenOn3 || webcamImage3 !== null">
+          <img [src]="webcamImage3 !== null ? webcamImage3 : imageSrc3" class="circle" />
+        </ng-container>
+        <br />
+        <div>
+          (ajuste Foto Adverso Cedula dentro del cuadro)
+        </div>
+        <button *ngIf="!screenOn3 || webcamImage3" type="button" mat-button style="background: #1c60a7; color: white"
+          (click)="toggleCamera3()">
+          Tomar Foto <i class="material-icons">add_a_photo</i>
+        </button>
+        <button *ngIf="screenOn3 && !webcamImage3" type="button" mat-button style="background: #262c5e; color: white"
+          (click)="cancelarCamera3()">
+          Cancelar <i class="material-icons">close</i>
+        </button>
+      </div>
+       
+      
+    </div>
+    <br>
+    <button (click)="sendIDPhoto()" [disabled]="!(webcamImage2&&webcamImage3) || waitSend" [ngStyle]="{  background: '#0168b3' }"
+      id="btnSendReport" mat-raised-button style="color: white; width: 90%">
+      Enviar foto
+    </button>
+    <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+
+
+  </mat-tab>
+</mat-tab-group>

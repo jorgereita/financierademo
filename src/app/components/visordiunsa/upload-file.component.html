@@ -1,0 +1,50 @@
+<div>
+  <div class="p-3 text-center">
+    <h3 class="text-center my-4">Selecciona un tipo de archivo</h3>
+
+    <mat-form-field appearance="outline" style="width: 480px;">
+      <mat-label>Seleccione el tipo de archivo que deseas subir</mat-label>
+      <mat-select id="tipoDocP1" [(ngModel)]="selectedOption">
+        <mat-option value="" disabled>Seleccione una opción</mat-option>
+        <mat-option value="Contrato de compra venta">Contrato de compra venta</mat-option>
+        <mat-option value="Pagare">Pagaré</mat-option>
+        <mat-option value="Plan de pago">Plan de pago</mat-option>
+        <mat-option value="Solicitud de compra venta">Solicitud de compra venta</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div>
+      <input style="display: none"
+             type="file"
+             accept=".pdf"
+             (change)="onFileChanged($event.target)"
+             #fileInput>
+
+      <div *ngIf="selectedOption">
+        <div *ngIf="!file; else File" class="d-flex flex-column align-items-start mb-3">
+          <p class="paragraph mx-auto">Selecciona el {{selectedOption}} a continuación</p>
+          <div (click)="fileInput.click()" class="d-flex flex-column align-items-center file-uploader__preview w-100">
+            <i class="fas fa-file-upload text-gray"></i>
+            <button class="btn" type="button" mat-button style="background:#262c5e;color: white;"><i class="material-icons"> file_upload </i> Seleccionar {{selectedOption}}</button>
+          </div>
+          <div class="text-center text-secondary font-weight-bold my-2 w-100" *ngIf="errorSize">El documento excede el tamaño maximo permitido</div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #File>
+      <div class="d-flex flex-column align-items-center file-uploader__preview file-uploader__preview--success w-100 my-2">
+        <i class="fas fa-file-upload text-green"></i>
+        <div class="text-center">
+          <h3>{{file?.name}}</h3>
+          <button class="btn has-border-hard" style="color: red;" mat-button (click)="removeFile()">Eliminar archivo</button>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="d-flex justify-content-around mt-3">
+      <button class="btn has-border-hard" mat-raised-button (click)="responseCancel()">Cerrar</button>
+      <button class="btn" type="button" mat-button style="background:#262c5e;color: white;" [disabled]="selectedOption === '' || !file" (click)="uploadFile()">Subir archivo</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+table {
+    /* font-family: arial, sans-serif; */
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    /* background-color: #dddddd; */
+  }
+  #btsContentTable .row > [class^="col-"]  {
+    /* background-color: rgba(86, 61, 124, 0.15); */
+    border: 1px solid #dddddd;
+    /* padding: 5px; */
+  } 
+  .naranjaS{
+    color:  #0167b1;
+    font-size: 15px;
+    vertical-align: middle;
+  }
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: DodgerBlue; */
+  }
+  
+  .flex-container > div {
+    /* background-color: #f1f1f1; */
+    /* width: 33%; */
+    /* margin: 10px; */
+    text-align: center;
+    line-height: 75px;
+    /* font-size: 30px; */
+  }

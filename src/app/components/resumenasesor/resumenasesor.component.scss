@@ -1,0 +1,86 @@
+
+   .row{
+    margin-right:0 !important;
+    margin-left:0 !important
+ }
+ ::ng-deep  .mat-drawer-content{
+  //  margin-left: 0px !important;
+ }
+  .standar{
+
+  }
+  .full{
+    margin-left: 0px !important;
+  }
+  $base-color: #215967;
+  $base-color2:#f68e22;
+
+  .fondo{
+    color: white;
+    background-color: $base-color;
+    width: 200px;
+  }
+  .fondo2{
+    color: white;
+    background-color: $base-color2;
+    width: 200px;
+  }
+  .fondoW{
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: $base-color;
+  }
+  .standarwidth{
+    width: auto
+  }
+  .fullWidth{
+    width: 100%;
+  }
+  .texto{
+    color: $base-color ;
+  }
+  .noCol{
+    padding-left: 0 !important;
+  }
+  .tabla1{
+      font-size: 20px;
+      width: 100%;
+      border: 2px solid $base-color ;
+  }
+  .tabla2{
+    font-size:18px;
+    width: 100%;
+    border: 2px solid $base-color ;
+  }
+  .tabla3{
+    font-size:18px;
+    width: 100%;
+    border: 2px solid $base-color2 ;
+  }
+
+  #table1 {
+
+    border-collapse: collapse;
+    width: 100%;
+    overflow: auto;
+  }
+
+  #table1 td {
+    border: 1px solid #dddddd;
+    text-align: center;
+
+  }
+
+  #table1 tr:nth-child(even) {
+
+  }
+  .thHei{
+    height: 50px;
+    color: white;
+    border: 1px solid #dddddd;
+    text-align: center;
+    }
+  .colorTh1{
+    background-color: $base-color;
+  }

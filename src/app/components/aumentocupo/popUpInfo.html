@@ -1,0 +1,51 @@
+<mat-card class="example-card">
+    <mat-card-header style="border-bottom: 1px solid #eeeeee;">
+        <span class="material-icons" style="color: #f68e22;">
+            lens
+        </span> Resultado del aumento de cupo
+        <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+    </mat-card-header>
+
+    <mat-card-content>
+        <br>
+        <div *ngIf="data.user">
+            <div class="col-sm" style="text-align: center;">
+                <a style="width: 100%;color: gray;" >
+                    ID <br> {{data.user.Id}}
+                </a>
+            </div>
+            <br>
+            <div class="col-sm" style="text-align: center;">
+                <a style="width: 100%;color: gray;" >
+                    Cupo Actual <br> {{data.user.CupoActual}}
+                </a>
+            </div>
+            <br>
+            <div class="col-sm">
+                <a style="width: 100%;background: white;color: green;border: 1px solid white;"
+                    class="btn btn-warning btn-md">Cupo Aprobado<br>
+                    <h4> {{data.user.CupoAprobado}} </h4>
+                </a>
+            </div>
+        </div>
+        <div *ngIf="!data.user">
+            <div class="col-sm">
+                <a style="width: 100%;background: white;color: rgb(211, 78, 78);border: 1px solid white;"
+                    class="btn btn-warning btn-md">Aumento<br>
+                    <h4> Rechazado </h4>
+                </a>
+            </div>
+        </div>
+
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;width: 100%;">
+        <div class="row">
+
+            <div class="col">
+                <button type="button" class="responsive1" mat-button [ngStyle]="{'background': '#f68e22'}"
+                    style="color: white;" (click)="onNoClick2()">Cerrar
+                </button>
+            </div>
+        </div>
+    </mat-card-actions>
+</mat-card>

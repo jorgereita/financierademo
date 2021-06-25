@@ -1,0 +1,55 @@
+ 
+<mat-toolbar  style="background: transparent; ">
+  <mat-toolbar-row>
+    <br>
+    <span id="cliente" routerLink="/home"><img src="../../../assets/img/crediDiunsa.png" alt="" height="55" width="220" style="margin-left: 20px;"></span>
+    <span class="example-spacer"></span>
+    <div *ngIf="estado" style="width: 100%;text-align: end;overflow-x: auto;">
+      <div *ngIf="roleId=='1'">
+        <div><span class="material-icons">person</span> Asesor comercial</div>
+      </div>
+      <div *ngIf="roleId=='2'">
+        <div> <span class="material-icons">person</span> Cobros </div>
+      </div>
+      <div *ngIf="roleId=='3'">
+        <div> <span class="material-icons">person</span>Asesor</div>
+      </div>
+      <div *ngIf="roleId=='4'">
+        <div><span class="material-icons">supervisor_account</span>Supervisor</div>
+      </div>
+      <div *ngIf="roleId=='5'">
+        <div><span class="material-icons">person</span>Asesor de servicios </div>
+      </div>
+      <div *ngIf="roleId=='6'">
+        <div><span class="material-icons">supervised_user_circle</span> Jefatura  </div>
+      </div> 
+      <div *ngIf="roleId=='7'">
+        <div><span class="material-icons">supervised_user_circle</span> Jefe de Cobros </div>
+      </div>
+      <div *ngIf="roleId=='8'">
+        <div><span class="material-icons">person</span> Auxiliar </div>
+      </div>
+      <div *ngIf="roleId=='9'">
+        <div><span class="material-icons">supervisor_account</span> Auditor </div>
+      </div>
+    </div>
+    <button *ngIf="estado" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu" >
+      <button mat-menu-item routerLink="/account">
+        <mat-icon>face</mat-icon>
+        <span>Cuenta</span>
+      </button>
+
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Salir</span>
+      </button>
+    </mat-menu>
+
+
+
+  </mat-toolbar-row>
+</mat-toolbar>

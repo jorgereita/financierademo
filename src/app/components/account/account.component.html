@@ -1,0 +1,65 @@
+<app-toolbar></app-toolbar>
+
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon matBadgeColor="primary">vpn_key</mat-icon>
+      Cambiar contraseña
+    </ng-template>
+    <form [formGroup]="changeForm" (ngSubmit)="change()">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image">
+            <mat-icon class="example-icon">account_circle</mat-icon>
+          </div>
+
+          <mat-card-title>Cambiar contraseña</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Contraseña actual" formControlName="password" [type]="hide1 ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error *ngIf="f.password.hasError('minlength') && !f.password.hasError('required')">
+              Password must be at least <strong>6 characters</strong>
+            </mat-error>
+            <mat-error *ngIf="f.password.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Contraseña nueva" formControlName="password1" [type]="hide2 ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error *ngIf="f.password1.hasError('minlength') && !f.password1.hasError('required')">
+              Password must be at least <strong>6 characters</strong>
+            </mat-error>
+            <mat-error *ngIf="f.password1.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Confirmación contraseña nueva" formControlName="password2" [type]="hide3 ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hide3 = !hide3">{{hide3 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error *ngIf="f.password2.hasError('minlength') && !f.password2.hasError('required')">
+              Password must be at least <strong>6 characters</strong>
+            </mat-error>
+            <mat-error *ngIf="f.password2.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-error *ngIf="error">
+            {{mensaje}}
+          </mat-error>
+
+          <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" *ngIf="!submitted">Cambiar</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </mat-tab>
+</mat-tab-group>

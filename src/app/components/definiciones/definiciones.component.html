@@ -1,0 +1,191 @@
+<br>
+
+  <div style="width: 100%;text-align: end;padding-right: 5px;" *ngIf="roleId=='6'||roleId=='7'||roleId=='4'"  >
+    <button type="button" class="responsive1" mat-button [disabled]="(waitSendC)"
+    style="background:#0168b3;color: white;" (click)="descargarReporte()">Descargar Reporte
+    </button>
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="waitSendC"></mat-progress-bar>
+<div>
+  <div>
+    <mat-card class="example-card" style="text-align: center;">
+      <mat-card-header style="text-align: center; width: 100%;color: gray;">
+        <h4> Ingrese el número documento </h4>
+      </mat-card-header>
+      <mat-card-content [formGroup]="dataIntra">
+        <mat-form-field appearance="outline" appearance="outline" style="width: 100%;  ">
+          <mat-label>Documento</mat-label>
+          <input matInput autocomplete="off" placeholder="" formControlName="Documento" type="text" value="" style="text-align: center;" (keyup)="onKeyCedula($event)"> 
+          <mat-icon matSuffix>person_pin</mat-icon>
+        </mat-form-field>
+        <br>
+        <button (click)="consultarCedula()" [disabled]="(!dataIntra.valid)"
+          [ngStyle]="{'background': waitSend ? 'gray':!dataIntra.valid?'gray':'#0168b3'}" id="btnSendReport"
+          mat-raised-button style="color: white;width: 100%;">Consultar </button>
+        <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+      </mat-card-content>
+      <mat-card-actions>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <br>
+
+  <div class="row" *ngIf="objEstadoCuenta">
+
+    <div class="col">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title style="color: #0168b3 ;">Estado Cuenta Actual</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          <table class="tableClass">
+            <tr>
+              <th>
+                Cuota Actual
+              </th>
+              <th>
+                Dias Mora
+              </th>
+              <th>
+                Fecha
+              </th>
+              <th>
+                Cuotas Faltantes
+              </th>
+              <th>
+                Pago Vencido
+              </th>
+              <th>
+                Saldo Total
+              </th>
+            </tr>
+            <tr>
+              <td>
+                {{objEstadoCuenta.CuotaActual}}
+              </td>
+              <td>
+                {{objEstadoCuenta.DiasMora}}
+              </td>
+              <td>
+                {{objEstadoCuenta.Fecha}}
+              </td>
+              <td>
+                {{objEstadoCuenta.NumCuotaActual}}
+              </td>
+              <td>
+                {{objEstadoCuenta.PagoVencido}}
+              </td>
+              <td style="background: #0168b3; color: white;">
+                {{objEstadoCuenta.SaldoTotal}}
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-sm-4" *ngFor="let item of dataElement">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title style="color: #0168b3 ;">{{item.Definicion}}</mat-card-title>
+          <!-- <mat-card-subtitle>{{item.DescripcionDefinicion}}</mat-card-subtitle> -->
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="row">
+
+            <div class="col" *ngIf="item.EstadoCuentaNuevaRef">
+              <label style="color:#0168b3; ;"> Estado Cuenta Nueva</label>
+              <table class="tableClass">
+                <tr>
+                  <th>
+                    Nuevo Monto
+                  </th>
+                  <th>
+                    Dias Mora
+                  </th>
+                  <th>
+                    Nueva Cuota
+                  </th>
+                  <th>
+                   Nuevo plazo
+                  </th>
+
+                </tr>
+                <tr>
+                  <td>
+                    {{item.EstadoCuentaNuevaRef.NuevoMonto}}
+                  </td>
+                  <td>
+                    {{item.EstadoCuentaNuevaRef.DiasMora}}
+                  </td>
+                  <td>
+                    {{item.EstadoCuentaNuevaRef.NuevaCuota}}
+                  </td>
+                  <td>
+                    {{item.EstadoCuentaNuevaRef.NumCuotaNueva}}
+                  </td>
+
+                </tr>
+              </table>
+            </div>
+            <div class="col" *ngIf="item.EstadoCuentaNorm">
+              <label style="color:#0168b3; ;"> Estado Cuenta Normalizada</label>
+              <br>
+              <b>{{item.EstadoCuentaNorm.EstadoCuenta}}</b><br>
+              <b>{{item.EstadoCuentaNorm.CuotaMes}}</b>
+            </div>
+            <div class="col" *ngIf="item.EstadoCuenta3Meses">
+              <label style="color:#0168b3; ;"> Estado Cuenta 3 Meses</label>
+              <br>
+              <ul>
+                <li>
+                  <b>{{item.EstadoCuenta3Meses.EstadoCuenta}}</b>
+                </li>
+                
+                <li>
+                  <b>{{item.EstadoCuenta3Meses.Cuota3Mes}}</b>
+                </li>
+             
+              </ul>
+              <br>
+             
+            </div>
+          </div>
+          <br>
+          <div class="row" *ngIf="item.OpcionesPago">
+            <div class="col">|
+              <label style="color:#0168b3; ;"> Opcion de pago</label>
+              <br>
+              <label>{{item.OpcionesPago.DescripcionPago}}</label>
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="item.OpcionesPago.EstadoSelect">
+                <div *ngFor="let item of item.OpcionesPago.opciones" class="flex-container" style="padding-left: 3px;"
+                  class="col">
+                  <mat-radio-button [value]="item.Id">{{item.Texto}}
+                  </mat-radio-button>
+                </div>
+
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <button (click)="sendA(item)" [ngStyle]="{'background': '#0168b3'}"
+                mat-raised-button style="color: white;width: 100%;">Tomar esta opcion </button>
+            </div>
+          </div>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

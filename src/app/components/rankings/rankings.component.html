@@ -1,0 +1,35 @@
+<br>
+<div class="fondoW">
+  <h2> <span class="material-icons"> today  </span> Ranking Asesores Comerciales </h2>
+</div>
+<br>
+<mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+<table id="table1" *ngIf="dataElement">
+  <tr  >
+    
+     <th class='thHei colorTh1' colspan="2"> Posicion</th>
+     <th class='thHei colorTh1'> Tienda</th>
+     <th class='thHei colorTh1'> Id Asesor</th>
+     <th class='thHei colorTh1'> Nombre</th>
+     <th class='thHei colorTh1'> Productividad al corte</th>
+     <th class='thHei colorTh1'> Meta productividad al corte</th>
+     <th class='thHei colorTh1'> % Ejecucion  de productividad al corte</th>
+     <th class='thHei colorTh1'> % Activacion </th>
+     <th class='thHei colorTh1'>Proyeccion  Cierre de mes</th>
+     <th class='thHei colorTh4'>Desfase al corte</th>
+  </tr>
+  <tr *ngFor="let item of dataElement;index as i">
+    <td *ngIf="i==0" [attr.rowspan]="dataElement.length" class="degrade">   </td>
+    <td > {{i+1}} </td>
+    <td> {{item.Tienda}} </td>
+    <td> {{item.IdAsesor}} </td>
+    <td > {{item.Nombre}} </td>
+    <td> {{item.ProductividadAlCorte}} </td>
+    <td> {{item.MetaProductividadAlCorte}} </td>
+    <td><span class="material-icons"   [ngClass]="{'panelRojo': (item.PorcentajeEjecucionAlCorte>=0 && item.PorcentajeEjecucionAlCorte<=62) , 'panelNaranja': (item.PorcentajeEjecucionAlCorte>=63 && item.PorcentajeEjecucionAlCorte<=138) ,'panelVerde': (item.PorcentajeEjecucionAlCorte>=139) }">brightness_1</span> {{item.PorcentajeEjecucionAlCorte}} % </td>
+    <td  [ngClass]="getClass(item?.PorcentajeActivacion)"> {{item.PorcentajeActivacion?item.PorcentajeActivacion:'0'}}% </td>
+    <td> {{item.ProyeccionCierreMes}} </td>
+    <td [ngClass]="getClass2(item?.DesfaseAlCorte)"> {{item.DesfaseAlCorte}} </td>
+  </tr>
+
+</table>

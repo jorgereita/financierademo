@@ -1,0 +1,83 @@
+:root {
+  --primary: #0169b4;
+  --orange: #ed7102;
+  --red: rgb(240, 81, 18);
+  --gray: #c4c8cc;
+}
+
+ .color-white{
+  color: #fff;
+ }
+
+.container-sols {
+  display: flex;
+  /* border: 0.5px solid var(--gray); */
+  margin: 0.7rem;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  background: #fff;
+}
+.zoomyInAnimation {
+  animation-duration: 3s;
+  animation-name: slidein;
+}
+.button-circle{
+  outline: 0;
+  border: 0;
+  font-size: 15px;
+  padding: 0.5rem;
+  margin: 1rem;
+  cursor: pointer !important;
+  min-width: 100PX;
+  color: #fff;
+}
+.simple{
+  color: gray;
+}
+.number-caja {
+  background: gray;
+  text-align: center;
+  color: white;
+  border-radius: 10%;
+}
+.lateral-button {
+  display: grid;
+  place-items: center;
+  padding: 0.5rem;
+  border-right: 1px solid var(--gray);
+}
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+.content-card{
+  margin: 1rem;
+}
+.indicator{
+    width: 10px;
+    height: auto;
+}
+.color-state-1 {
+  background-color: var(--primary);
+}
+.color-state-2 {
+  background-color: var(--orange);
+}
+.color-state-3 {
+  background-color: var(--red);
+}
+.color-1 {
+  color: var(--primary);
+}
+.color-2 {
+  color: var(--orange);
+}
+.color-3 {
+  color: var(--red);
+}

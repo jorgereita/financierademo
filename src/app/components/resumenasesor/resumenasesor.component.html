@@ -1,0 +1,293 @@
+<ng-container   style="text-align: center;">
+  
+
+  <mat-drawer-container class="example-container" [hasBackdrop]="false" style="height: 80vh">
+    <mat-drawer #drawer mode="side" [ngClass]="{'fullWidth': roleId=='1' ,'standarwidth': roleId!=='1' }">
+      <div class="container"  >
+        <button  *ngIf="roleId!=='1'" style="cursor: pointer;background: #1c60a7 !important" mat-mini-fab   aria-label="Example icon button with a home icon">
+          <mat-icon (click)="drawer.toggle()">clear</mat-icon>
+        </button>
+        <div class="row">
+          <div class="col">
+            <img src="../../../assets/img/profile.png" alt="" width="340" height="330">
+          </div>
+          <div class="col" style="padding-top: 6%;" *ngIf="dataElement">
+            <div id="containerTop">
+              <div class="row tabla1">
+                <div class="col fondo">
+                  Nombre del Asesor
+                </div>
+                <div class="col texto">
+                  {{dataElement.Nombre}}
+                </div>
+              </div>
+              <br>
+              <div class="row tabla1">
+                <div class="col fondo">
+                  Tienda
+                </div>
+                <div class="col texto">
+                  {{dataElement.Tienda}}
+                </div>
+              </div>
+              <br>
+              <div class="row tabla1">
+                <div class="col fondo">
+                  Fecha
+                </div>
+                <div class="col texto">
+                  {{dataElement.Fecha}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="fondoW">
+          <h2><span class="material-icons"> today </span> Gestión del día Asesores Comerciales </h2>
+        </div>
+        <br>
+        <div *ngIf="dataElement">
+          <div *ngIf="dataElement.vwGestionDiarias[0]">
+            <div class="row tabla1">
+              <div class="col fondo">
+                Abordajes del día
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionDiarias[0].Abordajes}}
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                En proceso
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionDiarias[0].EnProceso}}
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                Rechazados
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionDiarias[0].Rechazados}}
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                Clientes nuevos aprobados
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionDiarias[0].NuevosAprobados}}
+              </div>
+            </div>
+            <br>
+            <div class="row ">
+              <div class="col noCol">
+                <div class="row tabla2">
+                  <div class="col-8 fondo">
+                    Clientes nuevos facturados
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionDiarias[0].NuevosFacturados}}
+                  </div>
+                </div>
+              </div>
+              <div class="col noCol" style="padding-right: 0;">
+                <div class="row tabla3">
+                  <div class="col fondo2">
+                    % Activación clientes nuevos
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionDiarias[0].PctActivacionNuevos}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                Clientes Megabase aprobados
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionDiarias[0].MegabaseAprobados}}
+              </div>
+            </div>
+            <br>
+            <div class="row ">
+              <div class="col noCol">
+                <div class="row tabla2">
+                  <div class="col-8 fondo">
+                    Clientes Megabase facturados
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionDiarias[0].MegabaseFacturados}}
+                  </div>
+                </div>
+              </div>
+              <div class="col noCol" style="padding-right: 0;">
+                <div class="row tabla3">
+                  <div class="col fondo2">
+                    % Activación megabase
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionDiarias[0].PctActivacionMegabase}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div *ngIf="dataElement">
+          <div *ngIf="dataElement.vwGestionDiarias.length==0" style="width: 100%;text-align: center;">
+            <span style="width:250px; height: 150px; " class="lead">Sin información. </span>
+          </div>
+        </div>
+      
+        <br> <br> <br>
+        <div class="fondoW">
+          <h2> <span class="material-icons"> wysiwyg </span> Resumen Mensual a la fecha </h2>
+        </div>
+        <br>
+        <div *ngIf="dataElement">
+          <div *ngIf="dataElement.vwGestionMensuales[0]">
+            <div class="row tabla1">
+              <div class="col fondo">
+                Abordajes del mes
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionMensuales[0].Abordajes}}
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                En proceso
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionMensuales[0].EnProceso}}
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                Rechazados
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionMensuales[0].Rechazados}}
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                Clientes nuevos aprobados
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionMensuales[0].NuevosAprobados}}
+              </div>
+            </div>
+            <br>
+            <div class="row ">
+              <div class="col noCol">
+                <div class="row tabla2">
+                  <div class="col-8 fondo">
+                    Clientes nuevos facturados
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionMensuales[0].NuevosFacturados}}
+                  </div>
+                </div>
+              </div>
+              <div class="col noCol" style="padding-right: 0;">
+                <div class="row tabla3">
+                  <div class="col fondo2">
+                    % Activación clientes nuevos
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionMensuales[0].PctActivacionNuevos}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row tabla1">
+              <div class="col fondo">
+                Clientes Megabase aprobados
+              </div>
+              <div class="col texto">
+                {{dataElement.vwGestionMensuales[0].MegabaseAprobados}}
+              </div>
+            </div>
+            <br>
+            <div class="row ">
+              <div class="col noCol">
+                <div class="row tabla2">
+                  <div class="col-8 fondo">
+                    Clientes Megabase facturados
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionMensuales[0].MegabaseFacturados}}
+                  </div>
+                </div>
+              </div>
+              <div class="col noCol" style="padding-right: 0;">
+                <div class="row tabla3">
+                  <div class="col fondo2">
+                    % Activación megabase
+                  </div>
+                  <div class="col texto">
+                    {{dataElement.vwGestionMensuales[0].PctActivacionMegabase}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="dataElement">
+          <div *ngIf="dataElement.vwGestionMensuales.length==0" style="width: 100%;text-align: center;">
+            <span style="width:250px; height: 150px; " class="lead">Sin información. </span>
+          </div>
+        </div>
+      
+      </div>
+    </mat-drawer>
+    <mat-drawer-content [ngClass]="{'full': roleId=='1' ,'standar': roleId!=='1' }">
+      <div style="padding: 1rem; text-align: center;">
+        <mat-form-field appearance="outline" style="width: 90%;" class="example-full-width">
+          <mat-label>Filtrar asesores</mat-label>
+          <input matInput autocomplete="off" placeholder="Filtrar asesores..." style="cursor: auto"
+            (input)="onSearchChange($event.target.value)">
+        </mat-form-field>
+      </div>
+   
+
+      <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+      
+      <table id="table1">
+        <tr>
+          <th class='thHei colorTh1'> Usuario </th>
+          <th class='thHei colorTh1'> Nombre </th>
+          <th class='thHei colorTh1'>   </th>
+        </tr>
+        <tr *ngFor="let item of dataAsesores;index as i">
+    
+          <td> {{item.Usuario}} </td>
+          <td> {{item.Nombre}} </td>
+          <td>  <button   style="cursor: pointer !important;background: #1c60a7 !important" mat-mini-fab   aria-label="Example icon button with a home icon">
+            <mat-icon (click)="evalAsesor(item.UserId);">insights</mat-icon>
+          </button> </td>
+        </tr>
+      </table>
+      
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+</ng-container>
+
+
+<br>
+<br>

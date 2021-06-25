@@ -1,0 +1,810 @@
+<mat-vertical-stepper linear="true" #stepper>
+  <mat-step>
+    <ng-template matStepLabel>Generar consulta</ng-template>
+
+    <div class="card">
+      <!--
+      <div class="card-header info-color white-text text-center py-4">
+        <strong>Nueva consulta</strong>
+      </div> -->
+
+      <div class="card-body px-lg-5 pt-0" style="text-align: center">
+        <ng-container [formGroup]="dataIntra">
+          <div class="md-form">
+            <br />
+            <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+              <mat-label>Tipo de documento</mat-label>
+              <mat-select placeholder="" value="1">
+                <mat-option value="1">Número de Identidad</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>perm_identity</mat-icon>
+            </mat-form-field>
+            <br />
+            <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+              <mat-label>Número Documento</mat-label>
+              <input matInput autocomplete="off" placeholder=""  
+                formControlName="Documento" type="number" value="" />
+              <mat-icon matSuffix>person_pin</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <button (click)="evalCons(stepper)" [disabled]="!dataIntra.valid || waitSend" [ngStyle]="{
+              background: waitSend
+                ? 'gray'
+                : !dataIntra.valid
+                ? 'gray'
+                : '#0168b3'
+            }" id="btnSendReport" mat-raised-button style="color: white; width: 90%">
+            Consultar
+          </button>
+          <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+        </ng-container>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step *ngIf="pasoPre">
+    <ng-template matStepLabel>Pre evaluación.</ng-template>
+    <ng-container [formGroup]="dataPreEval">
+      <div class="md-form">
+        <br />
+        <mat-form-field appearance="outline" style="width: 90%">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="FechaNacimiento" placeholder=""
+            readonly="readonly" (click)="forzarFecha(picker)" (dateChange)="validateDateB()" />
+          <mat-icon matSuffix>calendar_today</mat-icon>
+          <mat-datepicker #picker="matDatepicker" ngDefaultControl (selectedChanged)="validateDateB()">
+          </mat-datepicker>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="outline" style="width: 90%">
+          <mat-label>Ingresos</mat-label>
+          <input matInput type="text" autocomplete="off" formControlName="Ingresos" mask="separator.2"
+            thousandSeparator="," maxlength="10" class="example-right-align" />
+          <mat-icon matSuffix>attach_money</mat-icon>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="outline" style="width: 90%">
+          <mat-label>Actividad económica</mat-label>
+          <mat-select (selectionChange)='onChangeActiPreScore($event.value)' formControlName="ActividadEconomica" placeholder="Actividad economica">
+            <mat-option *ngFor="let item of ActividadEconomica" [value]="item.Id">{{ item.Descripcion }}</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>work_outline</mat-icon>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="outline" style="width: 90%">
+          <mat-label>¿ Tiene experiencia crediticia ? </mat-label>
+          <mat-select formControlName="expCrediticia" placeholder="¿ Tiene experiencia crediticia ?">
+            <mat-option *ngFor="let item of logicList" [value]="item.state">{{
+              item.label
+              }}</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>work_outline</mat-icon>
+        </mat-form-field>
+        <div *ngIf="validateActPre">
+          <span> Antiguedad Laboral </span><br />
+          <mat-form-field appearance="outline">
+            <mat-label>Años</mat-label>
+            <input matInput min="0" autocomplete="off" (keyup)="onKeyAniosPre($event)"
+              formControlName="AniosAntiguedadLaboral" placeholder="" type="number" value="" />
+            <mat-icon matSuffix>calendar_today</mat-icon>
+          </mat-form-field>
+          &nbsp;
+          <mat-form-field appearance="outline">
+            <mat-label>Meses</mat-label>
+            <input matInput autocomplete="off" (keyup)="onKeyMesesPre($event)" formControlName="MesesAntiguedadLaboral"
+              max="12" min="0" placeholder="" type="number" value="0" />
+            <mat-icon matSuffix>calendar_today</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <button (click)="evalPre()" [disabled]="!dataPreEval.valid || waitSend" [ngStyle]="{
+          background: waitSend
+            ? 'gray'
+            : !dataPreEval.valid
+            ? 'gray'
+            : '#0168b3'
+        }" id="btnSendReport" mat-raised-button style="color: white; width: 90%">
+        Analizar
+      </button>
+      <br /><br />
+      <button (click)="cancelar(stepper)" [ngStyle]="{ background: '#262c5e' }" id="3" mat-raised-button
+        style="color: white; width: 90%">
+        Cancelar
+      </button>
+      <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+    </ng-container>
+  </mat-step>
+  <mat-step *ngIf="paso2">
+    <ng-template matStepLabel>Captura de datos </ng-template>
+    <div class="alert alert-primary" role="alert" *ngIf="backResponse.IdTipoConsulta == '1'">
+      <i class="material-icons"> error </i> Cliente
+      {{ backResponse.Estado || "preaprobado" }} con un cupo de L
+      {{ backResponse.Cupo }}.
+    </div>
+    <br />
+
+    <form class="container" [formGroup]="dataSocioDe">
+      <div class="row top-buffer"></div>
+      <span style="color: #262c5e">
+        <strong> Datos sociodemográficos:</strong>
+      </span>
+      <mat-divider></mat-divider>
+      <br />
+      <div class="col-12 inputForm" style="">
+        <ng-container *ngIf="validate">
+          <table style="text-align: center; width: 100%">
+            <tr>
+              <ng-container>
+                <div class="d-flex flex-row justify-content-around my-4">
+                  <div>
+                    <ng-container *ngIf="screenOn1 && webcamImage1 == null">
+                      <app-camera (pictureTaken)="handleImage1($event)"></app-camera>
+                    </ng-container>
+                    <ng-container *ngIf="!screenOn1 || webcamImage1 !== null">
+                      <img [src]="webcamImage1 !== null ? webcamImage1 : imageSrc1" class="circle" />
+                    </ng-container>
+                    <br />
+                    <div>
+                      (ajuste la parte delantera del documento al cuadro)
+                    </div>
+                    <button *ngIf="!screenOn1 || webcamImage1" type="button" mat-button
+                      style="background: #1c60a7; color: white" (click)="toggleCamera1()">
+                      Tomar Foto <i class="material-icons">add_a_photo</i>
+                    </button>
+                    <button *ngIf="screenOn1 && !webcamImage1" type="button" mat-button
+                      style="background: #262c5e; color: white" (click)="cancelarCamera()">
+                      Cancelar <i class="material-icons">close</i>
+                    </button>
+                  </div>
+
+                  <div>
+                    <ng-container *ngIf="screenOn2 && webcamImage2 == null">
+                      <app-camera (pictureTaken)="handleImage2($event)"></app-camera>
+                    </ng-container>
+                    <ng-container *ngIf="!screenOn2 || webcamImage2 !== null">
+                      <img [src]="webcamImage2 !== null ? webcamImage2 : imageSrc2" class="circle" />
+                    </ng-container>
+                    <br />
+                    <div>(ajuste la parte trasera del documento al cuadro)</div>
+                    <button *ngIf="!screenOn2 || webcamImage2" type="button" mat-button
+                      style="background: #1c60a7; color: white" (click)="toggleCamera2()">
+                      Tomar Foto <i class="material-icons">add_a_photo</i>
+                    </button>
+                    <button *ngIf="screenOn2 && !webcamImage2" type="button" mat-button
+                      style="background: #262c5e; color: white" (click)="cancelarCamera()">
+                      Cancelar <i class="material-icons">close</i>
+                    </button>
+                  </div>
+
+                  <div>
+                    <ng-container *ngIf="screenOn && webcamImage == null">
+                      <app-camera (pictureTaken)="handleImage($event)"></app-camera>
+                    </ng-container>
+                    <ng-container *ngIf="!screenOn || webcamImage !== null">
+                      <img [src]="webcamImage !== null ? webcamImage : imageSrc" class="circle" />
+                    </ng-container>
+                    <br />
+                    <div>(Trate de ajustar su rostro dentro del cuadro).</div>
+                    <button *ngIf="!screenOn || webcamImage" type="button" mat-button
+                      style="background: #1c60a7; color: white" (click)="toggleCamera()">
+                      Tomar Foto <i class="material-icons">add_a_photo</i>
+                    </button>
+                    <button *ngIf="screenOn && !webcamImage" type="button" mat-button
+                      style="background: #262c5e; color: white" (click)="cancelarCamera()">
+                      Cancelar <i class="material-icons">close</i>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </tr>
+
+            <tr></tr>
+          </table>
+        </ng-container>
+      </div>
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Primer nombre</mat-label>
+            <input (keyup)="onKeyTextEspDataSocio($event, 'PrimerNombreCliente')" matInput autocomplete="off"
+              placeholder="" formControlName="PrimerNombreCliente" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Segundo nombre</mat-label>
+            <input (keyup)="onKeyTextEspDataSocio($event, 'SegundoNombreCliente')" matInput autocomplete="off"
+              placeholder="" formControlName="SegundoNombreCliente" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Primer apellido</mat-label>
+            <input (keyup)="onKeyTextEspDataSocio($event, 'PrimerApellidoCliente')" matInput autocomplete="off"
+              formControlName="PrimerApellidoCliente" placeholder="Primer apellido" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Segundo apellido</mat-label>
+            <input (keyup)="onKeyTextEspDataSocio($event, 'SegundoApellidoCliente')" autocomplete="off" matInput
+              formControlName="SegundoApellidoCliente" placeholder="Segundo apellido" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Género</mat-label>
+            <mat-select placeholder="" formControlName="Sexo">
+              <mat-option *ngFor="let item of Sexo" [value]="item.Id">{{
+                item.Descripcion
+                }}</mat-option>
+              <!-- <mat-option value="F">Femenino</mat-option> -->
+            </mat-select>
+            <mat-icon matSuffix>perm_identity</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Estado Civil</mat-label>
+            <mat-select placeholder="" formControlName="EstadoCivil">
+              <mat-option *ngFor="let item of EstadoCivil" [value]="item.Id">{{
+                item.Descripcion
+                }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>supervisor_account</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="FechaNacimiento" placeholder=""
+              readonly="readonly" (click)="forzarFecha(picker)" (dateChange)="validateDateB()" />
+            <mat-icon matSuffix>calendar_today</mat-icon>
+            <mat-datepicker #picker="matDatepicker" ngDefaultControl (selectedChanged)="validateDateB()">
+            </mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Actividad económica</mat-label>
+            <mat-select formControlName="ActividadEconomica" placeholder="Actividad economica">
+              <mat-option *ngFor="let item of ActividadEconomica" [value]="item.Id">{{ item.Descripcion }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>work_outline</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Ingresos</mat-label>
+            <input matInput type="text" autocomplete="off" formControlName="Ingresos" mask="separator.2"
+              thousandSeparator="," maxlength="10" class="example-right-align" />
+            <!-- <span matPrefix>L&nbsp;</span> -->
+            <mat-icon matSuffix>attach_money</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <span style=""> Antiguedad </span><br />
+          <mat-form-field appearance="outline" style="width: 44%">
+            <mat-label>Años</mat-label>
+            <input matInput min="0" autocomplete="off" (keyup)="onKeyAnios($event)"
+              formControlName="AniosAntiguedadLaboral" placeholder="" type="number" value="" />
+            <mat-icon matSuffix>calendar_today</mat-icon>
+          </mat-form-field>
+          &nbsp;
+          <mat-form-field appearance="outline" style="width: 43%">
+            <mat-label>Meses</mat-label>
+            <input matInput autocomplete="off" (keyup)="onKeyMeses($event)" formControlName="MesesAntiguedadLaboral"
+              max="12" min="0" placeholder="" type="number" value="0" />
+            <mat-icon matSuffix>calendar_today</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Lugar de trabajo </mat-label>
+            <input matInput type="text" autocomplete="off" formControlName="lugarTrabajo" class="example-right-align" />
+            <!-- <span matPrefix>L&nbsp;</span> -->
+            <mat-icon matSuffix>person_pin_circle</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Puesto de trabajo</mat-label>
+            <input matInput autocomplete="off" formControlName="puestoTrabajo" placeholder="" type="text" value="" />
+            <mat-icon matSuffix>supervised_user_circle</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" appearance="outline" style="width: 90%">
+            <mat-label>Telefono de trabajo </mat-label>
+            <input matInput type="number" autocomplete="off" formControlName="telefonoTrabajo"
+              class="example-right-align" />
+            <!-- <span matPrefix>L&nbsp;</span> -->
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm"></div>
+      </div>
+
+      <span style="color: #262c5e"><strong> Datos de contacto: </strong> </span>
+      <mat-divider></mat-divider>
+      <br />
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Número de celular</mat-label>
+            <input matInput autocomplete="off" (keyup)="onKeyNumDataSocio($event, 'telefonoTrabajo')"
+              formControlName="NumeroCelular" placeholder="" type="number" value="" />
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Segundo número</mat-label>
+            <input matInput autocomplete="off" formControlName="SegundoNumeroTelefonico" placeholder="Segundo número"
+              type="number" value="" />
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- ----- -->
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <!-- <mat-form-field appearance="outline" style="width: 90%;  ">
+            <mat-label>Departamento</mat-label>
+            <input matInput autocomplete="off" formControlName="Departamento" placeholder="" type="number" value="">
+            <mat-icon matSuffix>room</mat-icon>
+          </mat-form-field> -->
+
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Departamento</mat-label>
+            <input type="text" matInput formControlName="Departamento" (keyup)="onKeyDepartamento($event)"
+              [matAutocomplete]="auto" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeDepartamento($event.option.value)">
+              <mat-option *ngFor="let item of FilterDepartamento" [value]="item.Nombre">
+                {{ item.Nombre }}
+              </mat-option>
+            </mat-autocomplete>
+
+            <!-- <mat-label>Departamento</mat-label>
+            <mat-select formControlName="Departamento" placeholder="Departamento"
+              (selectionChange)='changeDepartamento($event.value)'>
+              <mat-option *ngFor="let item of FilterDepartamento" [value]="item.Nombre">
+                {{item.Nombre}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>room</mat-icon>
+           -->
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Ciudad </mat-label>
+            <input type="text" matInput formControlName="Ciudad" (keyup)="onKeyCiudad($event)"
+              [matAutocomplete]="auto2" />
+            <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="changeCiudad($event.option.value)">
+              <mat-option *ngFor="let item of FilterCiudad" [value]="item.Nombre">
+                {{ item.Nombre }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon matSuffix>room</mat-icon>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="outline" style="width: 90%;">
+            <mat-label>Ciudad</mat-label>
+            <mat-select formControlName="Ciudad" placeholder="Departamento"
+              (selectionChange)='changeCiudad($event.value)'>
+              <mat-option *ngFor="let item of FilterCiudad" [value]="item.Nombre">
+                {{item.Nombre}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>room</mat-icon>
+          </mat-form-field> -->
+        </div>
+      </div>
+
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Colonia </mat-label>
+            <input type="text" matInput formControlName="Colonia" (keyup)="onKeyColonia($event)"
+              [matAutocomplete]="auto3" />
+            <mat-autocomplete #auto3="matAutocomplete">
+              <mat-option *ngFor="let item of FilterColonia" [value]="item.Nombre">
+                {{ item.Nombre }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon matSuffix>room</mat-icon>
+          </mat-form-field>
+          <!-- <mat-form-field appearance="outline" style="width: 90%;">
+            <mat-label>Colonia</mat-label>
+            <mat-select formControlName="Ciudad" placeholder="Colonia"
+              (selectionChange)='onKeyColonia($event.value)'>
+              <mat-option *ngFor="let item of FilterColonia" [value]="item.Nombre">
+                {{item.Nombre}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>room</mat-icon>
+          </mat-form-field> -->
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Dirección</mat-label>
+            <input matInput autocomplete="off" formControlName="Direccion" placeholder="Segundo número" type="text"
+              value="" />
+            <mat-icon matSuffix>home</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>Correo electronico</mat-label>
+            <input matInput autocomplete="off" formControlName="CorreoElectronico" placeholder="" type="text"
+              value="" />
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-1"></div>
+        <div class="col inputForm">
+          <div class="col inputForm">
+            <span style=""> </span>
+            <mat-form-field appearance="outline" style="width: 45%">
+              <mat-label>Latitud</mat-label>
+              <input matInput autocomplete="off" formControlName="latitud" placeholder="" [attr.disabled]="true"
+                readonly type="number" value="" />
+              <mat-icon matSuffix>room</mat-icon>
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field appearance="outline" style="width: 43%">
+              <mat-label>Longitud</mat-label>
+              <input matInput autocomplete="off" [attr.disabled]="true" readonly formControlName="longitud" max="12"
+                min="0" placeholder="" type="text" value="" />
+              <mat-icon matSuffix>room</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row top-buffer" style="width: 98%">
+        <div class="col inputForm">
+          <table style="width: 100%">
+            <tr>
+              <td style="width: 90%">
+                <mat-form-field appearance="outline" style="width: 100%">
+                  <mat-label>Ubicación</mat-label>
+                  <input matInput type="text" formControlName="Direccion" placeholder="Buscar" autocorrect="off"
+                    autocomplete="off" autocapitalize="off" spellcheck="off" type="text" #search />
+                </mat-form-field>
+              </td>
+              <td style="width: 20%; padding-top: 7px; vertical-align: top">
+                <button mat-raised-button (click)="evalDireccion(this.dataSocioDe.value.Direccion)"
+                  style="color: white; background: #0168b3; height: 53px">
+                  Buscar
+                </button>
+              </td>
+            </tr>
+          </table>
+
+          <div #mapContainer id="map"></div>
+          <!-- {{longitudSeleccionada}}<br>{{latitudSeleccionada}} -->
+        </div>
+      </div>
+      <br /><br />
+      <span style="color: #262c5e"><strong> Referencias : </strong> </span>
+      <mat-divider></mat-divider>
+      <br />
+      <div class="row top-buffer" style="width: 99%">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Nombres </mat-label>
+            <input matInput autocomplete="off" formControlName="nombreRef1" placeholder="" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Apellidos </mat-label>
+            <input matInput autocomplete="off" formControlName="apellidoRef1" placeholder="" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Telefono </mat-label>
+            <input matInput autocomplete="off" formControlName="telefonoRef1" placeholder="" type="number" value="" />
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row top-buffer" style="width: 99%">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Nombres </mat-label>
+            <input matInput autocomplete="off" formControlName="nombreRef2" placeholder="" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Apellidos </mat-label>
+            <input matInput autocomplete="off" formControlName="apellidoRef2" placeholder="" type="text" value="" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Telefono </mat-label>
+            <input matInput autocomplete="off" formControlName="telefonoRef2" placeholder="" type="number" value="" />
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row top-buffer">
+        <div class="col inputForm">
+          <mat-form-field appearance="outline" style="width: 95%">
+            <mat-label>Comentarios del abordaje </mat-label>
+            <textarea style="resize: none" matInput autocomplete="off" name="" id="" cols="30" rows="10"
+              formControlName="Comentarios"></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+
+    <button (click)="next(stepper)" [ngStyle]="{ background: waitSend ? 'gray' : '#0168b3' }" id="btnSendReport"
+      mat-raised-button style="color: white; width: 95%">
+      Registrar Cliente</button><br /><br />
+
+    <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+
+    <button (click)="cancelar(stepper)" [ngStyle]="{ background: '#262c5e' }" id="3" mat-raised-button
+      style="color: white; width: 95%">
+      Cancelar
+    </button>
+  </mat-step>
+
+  <mat-step *ngIf="paso3">
+    <ng-template matStepLabel>Solicitud de compra venta</ng-template>
+    <div style="width: 100%; text-align: left">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <div class="tituloPre">Nombre</div>
+            <div class="textPre">
+              {{ this.dataSocioDe.value.PrimerNombreCliente }}
+              {{ this.dataSocioDe.value.SegundoNombreCliente }}
+              {{ this.dataSocioDe.value.PrimerApellidoCliente }}
+              {{ this.dataSocioDe.value.SegundoApellidoCliente }}
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Documento</div>
+            <div class="textPre">{{ docActual }}</div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Sexo</div>
+            <div class="textPre">{{ evalSex() }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <div class="tituloPre">Estado civil</div>
+            <div class="textPre">{{ evalCivil() }}</div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Fecha de nacimiento</div>
+            <div class="textPre">
+              {{ this.dataSocioDe.getRawValue().FechaNacimiento.toString().split("T")[0]}} 
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Correo electrónico</div>
+            <div class="textPre">
+              {{ this.dataSocioDe.value.CorreoElectronico }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <div class="tituloPre">Números de contacto</div>
+            <div class="textPre">
+              {{ this.dataSocioDe.value.NumeroCelular }} /
+              {{ this.dataSocioDe.value.SegundoNumeroTelefonico }}
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Actividad económica</div>
+            <div class="textPre">{{ evalEco() }}</div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Antiguedad laboral</div>
+            <div class="textPre">
+              {{ this.dataSocioDe.getRawValue().AniosAntiguedadLaboral }} Años ,
+              {{ this.dataSocioDe.getRawValue().MesesAntiguedadLaboral }} Meses
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <div class="tituloPre">Ingresos</div>
+            <div class="textPre">
+             L {{ this.dataSocioDe.getRawValue().Ingresos.toLocaleString() }}
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="tituloPre">Ubicación</div>
+            <div class="textPre">{{ this.dataSocioDe.value.Direccion }}</div>
+          </div>
+          <div class="col-sm"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm">
+            <div class="tituloPre">Comentarios</div>
+            <div class="textPre">{{ this.dataSocioDe.value.Comentarios }}</div>
+            <!-- <div class="tituloPre">Tipo de cliente </div>
+            <div class="textPre"> <i> {{estado}}</i>  </div> -->
+          </div>
+          <div class="col-sm"></div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+
+      <div style="width: 100%; text-align: center">
+        <img *ngIf="img" [src]="img" class="imageFirma" style="border-bottom: 1px solid; width: 80%; height: 100px" />
+        <br /><br />
+        <button (click)="openDialog()" [ngStyle]="{ background: waitSend ? 'gray' : '#0168b3' }" id="btnSendReport"
+          mat-raised-button style="color: white; width: 30%">
+          Firmar</button><br />
+      </div>
+
+      <mat-divider></mat-divider>
+      <span class="textPre">* Por este medio autorizo a DISTRIBUCIONES UNIVERSALES S.A. DE C.V. a
+        consultar mi información personal y crediticia reportada en bases de
+        datos de cualquier tercero incluyendo, pero no limitándose a burós de
+        créditos privados y/o públicos. También autorizo expresamente a terceros
+        y a los burós de créditos privados y/o públicos a brindar información
+        personal y crediticia sobre mi persona para que puedan utilizar esta
+        información para los efectos que se estimen pertinentes. Así mismo quedo
+        entendido(a) que mi información pasa a ser reportara por la central de
+        riesgo mientras tenga obligaciones vigentes .</span><br />
+      <br />
+      <mat-checkbox class="example-margin" [(ngModel)]="checked" color="primary">Acepta consulta a centrales
+      </mat-checkbox>
+      <br /><br />
+      <button *ngIf="checked && img" [disabled]="!checked || waitSend || img == ''" (click)="nextFirma(stepper)"
+        [ngStyle]="{ background: waitSend ? 'gray' : '#0168b3' }" id="btnSendReport" mat-raised-button
+        style="color: white; width: 100%">
+        Enviar consulta</button><br /><br />
+      <button (click)="cancelar(stepper)" [ngStyle]="{ background: '#262c5e' }" id="2" mat-raised-button
+        style="color: white; width: 100%">
+        Cancelar
+      </button>
+      <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+    </div>
+  </mat-step>
+
+  <mat-step *ngIf="paso4">
+    <ng-template matStepLabel>Cupo Credito</ng-template>
+    <br />
+    <div style="width: 100%; text-align: center">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <a style="
+                width: 100%;
+                background: white;
+                color: #0168b3;
+                border: 1px solid white;
+              " class="btn btn-warning btn-md">ID solicitud<br />
+              <h4>#{{ IdCaso }}</h4>
+            </a>
+          </div>
+          <div class="col-sm">
+            <a style="
+                width: 100%;
+                background: white;
+                color: #0168b3;
+                border: 1px solid white;
+              " class="btn btn-warning btn-md">Tipo de cliente<br />
+              <h4>{{ idTipoCliente == 1 ? "MegaBase" : "Nuevo" }}</h4>
+            </a>
+          </div>
+          <div class="col-sm">
+            <a style="
+                width: 100%;
+                background: white;
+                color: red;
+                border: 1px solid white;
+              " class="btn btn-warning btn-md">Documento<br />
+              <h4>{{ docActual }}</h4>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <br /><br />
+      <div *ngIf="backResponse.IdEstado!=='6' ">
+        <a [ngStyle]="{
+            color:
+              estado == 'Rechazado'
+                ? 'red'
+                : estado == 'Aprobado'
+                ? '#1e7e34'
+                : '#262c5e'
+          }" [ngClass]="{
+            Rechazado: estado == 'Rechazado',
+            Aprobado: estado == 'Aprobado',
+            Activo: estado == 'Activo'
+          }" style="width: 80%; background: white; padding-top: 3px" class="btn btn-success btn-md">Cupo Asignado<br />
+          <div>
+            <h4>{{ cupoActual | currency: "L":"symbol":"1.0-0" }}</h4>
+          </div>
+          <i class="fas fa-money-bill-wave fa-2x mb-1 indigo-text" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <br /><br />
+      <a [ngStyle]="{
+          color:
+            estado == 'Rechazado'
+              ? 'red'
+              : estado == 'Aprobado'
+              ? '#1e7e34'
+              : '#262c5e'
+        }" style="width: 80%; background: white; padding-top: 3px" class="btn btn-success btn-md" [ngClass]="{
+          Rechazado: estado == 'Rechazado',
+          Aprobado: estado == 'Aprobado',
+          Activo: estado == 'Activo'
+        }">Estado
+        <br />
+        <h4>{{ estado!=='6'?estado:'No aplica' }}</h4>
+        <i class="fas fa-check-square fa-2x mb-1 indigo-text" aria-hidden="true"></i>
+      </a>
+    </div>
+    <br /><br />
+
+    <button (click)="finalizar(stepper)" [ngStyle]="{ background: waitSend ? 'gray' : '#0168b3' }" id="btnSendReport"
+      mat-raised-button style="color: white; width: 95%">
+      Finalizar</button><br /><br />
+
+    <button (click)="cancelar(stepper)" [ngStyle]="{ background: '#262c5e' }" id="2" mat-raised-button
+      style="color: white; width: 95%">
+      Cancelar
+    </button>
+    <mat-progress-bar mode="indeterminate" *ngIf="waitSend"></mat-progress-bar>
+    <div></div>
+  </mat-step>
+</mat-vertical-stepper>

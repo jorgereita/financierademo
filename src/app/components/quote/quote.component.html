@@ -1,0 +1,112 @@
+<div class="quote">
+  <h3>Consulta en línea CrediDiunsa</h3>
+  <p>Ingrese un número de documento</p>
+
+  <form [formGroup]="searchForm">
+    <div>
+      <mat-form-field class="is-full-width mx-auto" appearance="outline" style="width: 90%;">
+        <mat-label>Ingresa el número de documento a consultar*</mat-label>
+        <input matInput autocomplete="off" maxlength="13"
+               formControlName="Documento" placeholder="1049622445" type="number" value="" mask="0*" (keyup)="onKeyDoc($event)" >
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button (click)="search()" [disabled]="(!searchForm.valid) || (waitSend)"
+               [ngStyle]="{'background': !searchForm.valid || waitSend ? 'gray':' #0168b3'}" id="btnSendReport" mat-raised-button
+               style="color: white;width: 90%;">Buscar </button>
+    </div>
+  </form>
+
+  <div class="quote__results" *ngIf="searchResults">
+    <div>
+      <h5>Nombre del cliente</h5>
+      <strong>{{searchResults?.NombreCliente}}</strong>
+    </div>
+    <div>
+      <h5>Estado del cliente</h5>
+      <strong>{{searchResults.Respuesta.IdError === 1 ? 'Cuenta no habilitada' :searchResults?.EstadoCliente}}</strong>
+    </div>
+    <div>
+      <h5>Estado del crédito</h5>
+      <strong>{{searchResults?.EstadoCredito}}</strong>
+    </div>
+    <div>
+      <h5>Aprobado</h5>
+      <strong>{{searchResults?.CupoAprobado}}</strong>
+    </div>
+    <div>
+      <h5>Cupo Disponible</h5>
+      <strong>{{searchResults?.CupoDisponible}}</strong>
+    </div>
+    <div>
+      <h5>Cuota actual</h5>
+      <strong>{{searchResults?.CuotaActual}}</strong>
+    </div>
+    <div>
+      <h5>Fecha de corte</h5>
+      <strong>{{searchResults?.FechaCorte}}</strong>
+    </div>
+    <div>
+      <h5>Saldo último corte</h5>
+      <strong>{{searchResults?.SaldoUltimoCorte}}</strong>
+    </div>
+  </div>
+
+  <div class="quote__simulation" *ngIf="searchResults">
+    <form [formGroup]="simulateForm" *ngIf="searchResults?.IdEstadoCredito === 1">
+      <div>
+        <mat-form-field class="is-full-width mx-auto" appearance="outline" style="width: 90%;">
+          <mat-label>Ingresa el monto a financiar*</mat-label>
+          <input matInput autocomplete="off" maxlength="20"
+                 formControlName="ValorSimular" placeholder="1000" type="text" value="" mask="0*">
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-row justify-content-around align-items-center">
+        <button (click)="simulate()" [disabled]="(!simulateForm.valid) || (waitSend)"
+                [ngStyle]="{'background': !simulateForm.valid || waitSend ? 'gray':' #0168b3'}" mat-raised-button
+                style="color: white;width: 90%;">Calcular cuotas</button>
+
+        <button (click)="reset()" [disabled]="waitSend"
+                [ngStyle]="{'background': waitSend ? 'gray':' #0168b3'}" mat-raised-button
+                style="color: white;width: 90%;">Nueva consulta</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="quote__simulation-table mat-elevation-z8" *ngIf="dataTable">
+    <mat-table [dataSource]="dataTable" matSort>
+
+      <ng-container matColumnDef="term">
+        <mat-header-cell *matHeaderCellDef>
+          <div><span class="tiny-font text-dark-40">Plazo</span></div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <small
+          class="text-gray">{{element?.Plazo}}</small> </mat-cell>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="financingQuote">
+        <mat-header-cell *matHeaderCellDef>
+          <div><span class="tiny-font text-dark-40">Cuota monto a financiar</span> </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <small
+          class="text-gray">{{element?.ValorAntCuota}}</small> </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="newQuote">
+        <mat-header-cell *matHeaderCellDef>
+          <div><span class="tiny-font text-dark-40">Nueva cuota (Cuota unificada)</span></div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <small
+          class="text-gray">{{element?.ValorCuota}}</small> </mat-cell>
+      </ng-container>
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let element; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+ <section>
+   <header>
+     <h5> Ingrese razón de desistimiento </h5>
+   </header>
+   <main>
+     <form [formGroup]="dataReasons">
+       <mat-form-field appearance="outline" style="width: 90%;  ">
+         <!-- <mat-label>¿ Tiene experiencia crediticia ? </mat-label> -->
+         <mat-select formControlName="reason" placeholder="Razón de desistimiento">
+             
+           <mat-option *ngFor="let item of reasonsList" [value]="item.id">{{item.label}}</mat-option>
+         </mat-select>
+         <mat-icon matSuffix>work_outline</mat-icon>
+       </mat-form-field>
+     </form>
+   </main>
+   <footer>
+     <button class="button-circle simple" (click)="close()" aria-label="button take">
+       Cancelar
+     </button>
+     <button class="button-circle " [ngClass]="{'simple':!dataReasons.valid,'color-state-1':dataReasons.valid}" (click)="sendReason()" aria-label="button take" [disabled]="(!dataReasons.valid)||(waitSend)">
+       Enviar
+     </button> 
+   </footer>
+ </section>
+ 

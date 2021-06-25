@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>
+    <div *ngIf="validaMsm!==2">
+        Confirmación
+    </div>
+    <div *ngIf="validaMsm==2">
+        Información
+    </div>
+
+</h1>
+<div mat-dialog-content>
+    <p style="white-space: pre-line;">
+        
+        <span *ngIf="validaMsm==1">
+            {{mensaje}}
+        </span>
+        <span *ngIf="validaMsm==2" >
+            {{mensaje2}}
+        </span>
+        <!-- <span *ngIf="validaMsm==3" >
+            ¿ Desea  cambiar la solicitud a <b style="color: seagreen;"> Documentos Completos </b> ?
+        </span> -->
+    </p>
+</div>
+<div mat-dialog-actions>
+    <div *ngIf="validaMsm!==2">
+        <div class="row">
+            <div class="col">
+                <button mat-button (click)="cerrarDialogo()">Cancelar</button>
+            </div>
+            <div class="col">
+                <button (click)="confirmado()" class="btn" type="button" mat-button cdkFocusInitial
+                style="background:#f68e22;color: white;border-radius: 5px;margin: 2%; ">Ok</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="validaMsm==2">
+        <div class="row">
+            
+            <div class="col">
+                <button (click)="confirmado()" class="btn" type="button" mat-button cdkFocusInitial
+                style="background:#f68e22;color: white;border-radius: 5px;margin: 2%; ">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

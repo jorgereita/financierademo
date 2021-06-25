@@ -1,0 +1,64 @@
+$color-green-100: #ef592c;
+$color-green: $color-green-100;
+$color-red: #ef592c;
+$color-orange: #FF8A00;
+$color-blue: #ef592c;
+$color-blue-100: #ef592c;
+$color-dark: #131A27;
+$color-dark-40: #7D8491;
+$color-dark-60: #bec5d2;
+$color-dark-80: #515B6C; 
+$color-dark-90: #C2C9D3;
+$color-gray-100: rgba(194, 201, 211, 0.35);
+$color-gray-60: #A8ADB5;
+$color-gray: #e8e8e8;
+$color-black: #215ea8;
+$color-black-100: #215ea8;
+$color-black-300: #f9f9f9;
+$color-black-500: #215ea8;
+$color-white: #ffffff;
+$color-white-20: rgba(212, 214, 218, 0.35);
+$background-dark: #263247;
+$color-hover-sidebar-menu: #215ea8;
+$color-dark-100: #0E2B55;
+
+.border1{
+    // border: 1px solid gray;border-radius: 5px;
+    border-radius: 24px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+ /* input color class */
+::ng-deep input.mat-input-element {
+  color: #484a4c;
+}
+
+/* Change label color on focused */
+::ng-deep .mat-form-field .mat-form-field-label {
+  color: gray !important;
+  font-size: 18px;
+}
+
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+  background-color: #50d0fb !important;
+}
+.color-main{
+  color:$color-green;
+}
+.red-background{
+  background: $color-green;
+  color: white
+}
+.btn-standar{
+  border-radius: 20px !important;
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    min-height: 40px !important;
+    min-width: 200px !important;
+}
+.main-gradient{ 
+ background: radial-gradient(100% 100% at 100% 50%,#2257a0 0,#468cc9 100%) !important;
+ color: white;
+}

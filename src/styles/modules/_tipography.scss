@@ -1,0 +1,131 @@
+@font-face {
+  font-family: 'Avenir';
+  src: url('assets/fonts/Avenir/AvenirNextLTPro-Bold.woff2') format('woff2'),
+  url('assets/fonts/Avenir/AvenirNextLTPro-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('assets/fonts/Avenir/AvenirNextLTPro-Regular.woff2') format('woff2'),
+  url('assets/fonts/Avenir/AvenirNextLTPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('assets/fonts/Avenir/AvenirNextLTPro-It.woff2') format('woff2'),
+  url('assets/fonts/Avenir/AvenirNextLTPro-It.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+h1 {
+ font-family: 'Avenir', sans-serif;
+}
+
+h2 {
+ font-family: 'Avenir', sans-serif;
+}
+
+h3 {
+ font-family: 'Avenir', sans-serif;
+}
+
+h4 {
+ font-family: 'Avenir', sans-serif;
+}
+
+h5 {
+ font-family: 'Avenir', sans-serif;
+}
+
+h6 {
+ font-family: 'Avenir', sans-serif;
+}
+
+span, p, ul, li, a, i, strong {
+  font-size: 16px;
+  color: $color-dark;
+  font-family: 'Avenir', sans-serif;
+
+  &.normal-size {
+    font-size: 16px!important;
+  }
+}
+
+small {
+  font-size: 16px;
+  font-family: 'Avenir', sans-serif;
+}
+
+a {
+  color: $color-blue-100;
+
+  &:hover {
+
+  }
+
+  &:focus {
+
+  }
+
+  &:active {
+
+  }
+}
+
+.heading-3 {
+  font-family: 'Avenir', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 33px;
+  letter-spacing: -0.0384615px;
+}
+
+.heading-5 {
+  font-family: 'Avenir', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 27px;
+  letter-spacing: -0.0384615px;
+}
+
+.heading-6 {
+  font-family: 'Avenir', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.0384615px;
+}
+
+.sub-paragraph {
+  font-family: 'Avenir', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.small-paragraph {
+  font-family: 'Avenir', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tiny-font {
+  font-family: 'Avenir', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.heading-icon {
+  font-size: 25px;
+}
+
+.big-icon {
+  font-size: 40px;
+}
